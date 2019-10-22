@@ -13,10 +13,14 @@ defmodule GeospatialApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", GeospatialApiWeb do
+    pipe_through :api
+
+    get "/jobs_in_radius", JobsInRadiusController, :index
+  end
+
   scope "/", GeospatialApiWeb do
     pipe_through :browser
-
-    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
