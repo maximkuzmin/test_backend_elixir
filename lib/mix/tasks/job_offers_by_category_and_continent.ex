@@ -13,17 +13,17 @@ defmodule Mix.Tasks.JobOffersByCategoryAndContinent do
 
   defp query do
     from j in JobOffer,
-         inner_join: p in "professions",
-         on: j.profession_id == p.id,
-         inner_join: c in "countries",
-         #ecto "native" dsl cant use PostGIS ~ operator, so we use fragment macro
-         on: fragment("? ~ ?", c.geom, j.office_location),
-         group_by: [c.continent, p.category_name],
-         select: [count(j.id), p.category_name, c.continent]
+      inner_join: p in "professions",
+      on: j.profession_id == p.id,
+      inner_join: c in "countries",
+      on: fragment("ST_covers(?,?)", c.geom, j.office_location),
+      group_by: [c.continent, p.category_name],
+      select: [fragment("COUNT(DISTINCT(?))", j.id), p.category_name, c.continent]
   end
 
   defp transform_data(raw_data) do
     mapped_raw_data = raw_data |> Enum.map(fn row -> map_from_row(row) end)
+    TableRex.quick_render!(raw_data) |> IO.puts
 
     categories = mapped_raw_data |> Enum.map(&(&1.category)) |> Enum.uniq |> Enum.sort
     categories = ["Total" | categories]
@@ -51,13 +51,12 @@ defmodule Mix.Tasks.JobOffersByCategoryAndContinent do
   end
 
   defp map_from_row(row) do
-    count = row |> Enum.at(0)
-    category = row |> Enum.at(1)
-    continent = row |> Enum.at(2)
+    [count, category, continent] = row
     %{count: count, category: category, continent: continent}
   end
 
   defp output({header, table}) do
-    TableRex.quick_render!(table, header, "JobOffer by category and continent") |> IO.puts
+    TableRex.quick_render!(table, header, "JobOffer by category and continent")
+      |> IO.puts
   end
 end
