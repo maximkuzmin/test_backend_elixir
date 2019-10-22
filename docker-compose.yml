@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  postgis:
+    image: "mdillon/postgis"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data/
+      - ./data/datasets/:/datasets/
+
+  app:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash run_dockerized_app.sh
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgis
