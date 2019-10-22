@@ -43,7 +43,9 @@ defmodule GeospatialApi.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:geo_postgis, "~> 3.1"}
+      {:geo_postgis, "~> 3.1"},
+      {:csv, "~> 2.3"},
+      {:table_rex, "~> 2.0.0"}
     ]
   end
 

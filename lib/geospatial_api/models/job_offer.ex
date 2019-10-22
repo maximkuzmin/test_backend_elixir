@@ -22,9 +22,9 @@ defmodule GeospatialApi.JobOffer do
   defp validate_office_location(changeset) do
     {long, lat} = geopoint = changeset.changes.office_location.coordinates
     if valid_geo_val?(long) && valid_geo_val?(lat) do
-      add_error(changeset, :office_location, "wrong office coordinates")
-    else
       changeset
+    else
+      add_error(changeset, :office_location, "wrong office coordinates")
     end
   end
 

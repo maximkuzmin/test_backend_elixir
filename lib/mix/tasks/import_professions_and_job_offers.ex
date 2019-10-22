@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.ImportProfessions do
+defmodule Mix.Tasks.ImportProfessionsAndJobOffers do
   alias GeospatialApi.{Profession, Repo, JobOffer}
   use Mix.Task
 

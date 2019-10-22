@@ -4,10 +4,7 @@ case "$1" in
     prepare)
         mix ecto.create
         mix ecto.migrate
-        exit 0
-        ;;
-    import)
-        echo 1
+        mix import_professions_and_job_offers
         exit 0
         ;;
     *)
