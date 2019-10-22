@@ -1,20 +1,28 @@
-# GeospatialApi
+# Backend Test exersize solution by Maxim Kuzmin/Noveo
 
-To start your Phoenix server:
+## How to deploy it
+This app has docker-compose file so you can just cd to project dir and run
+```
+# this will build app image and pull db image
+$ docker-compose build
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+# this initial script will install apps dependencies, prepare database structure and import initial CSV's
+$ docker-compose run app bash run_dockerized_app.sh prepare
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+# after it you can up all docker-compose network as daemon with:
+docker-compose up -d
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## this one is a bit trickier
+# jump into PostGIS container
+docker-compose exec postgis bash
 
-## Learn more
+# inside the container import GIS dataset. Dataset is free, but belongs to https://www.naturalearthdata.com/
+shp2pgsql -I -d -s 4326 -c datasets/ne_10m_admin_0_countries.shp countries | psql -U user -d geospatial_api_dev
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+# and then just exit from container
+exit
+```
+After that you have completely ready database and app.
+
+
+ ## Task #1
