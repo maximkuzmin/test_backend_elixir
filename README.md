@@ -10,7 +10,7 @@ $ docker-compose build
 $ docker-compose run app bash run_dockerized_app.sh prepare
 
 # after it you can up all docker-compose network as daemon with:
-docker-compose up -d
+$ docker-compose up -d
 
 ## this one is a bit trickier
 # jump into PostGIS container
@@ -40,9 +40,9 @@ After that you have completely ready database and app.
  3) "continent:Europe:category:TECH" => integer pairs to fastly access and increment/decrement on JobOffers table insertions/deletions
  in Ruby-like pseudocode it could look like:
  ```
-    def update_continent_statistics do
-        rough_lat = office_location.lat.round
-        rough_long = offfice_location.long.round
+    def update_continent_statistics(location) do
+        rough_lat = location.lat.round
+        rough_long = location.long.round
         cont = KeyValStore.get("long:#{long}:lat:#{lat}:continent")
         category_name = KeyValStore.get("profession:#{profession_id}:category")
         KeyValStore.increment("continent:#{continent}:category:#{category_name}")
@@ -52,3 +52,4 @@ After that you have completely ready database and app.
 
  ## Task #3
  Visit [http://localhost:4000/api/jobs_in_radius?lat=48&long=2.5&radius=250](http://localhost:4000/api/jobs_in_radius?lat=48&long=2.5&radius=250) to check the result JSON and play with params.
+Source code for this endpoint can be found at lib/geospatial_api_web/controllers
