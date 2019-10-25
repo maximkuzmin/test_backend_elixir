@@ -5,15 +5,16 @@ defmodule GeospatialApiWeb.JobsInRadiusController do
   alias GeospatialApi.{Repo, JobOffer}
 
   def index(conn, %{"long" => long, "lat" => lat} = params) do
-    radius_in_km = get_radius_in_km params["radius"]
+    radius_in_km = get_radius_in_km(params["radius"])
 
     radius = radius_in_km * 1000
     data = make_query({long, lat, radius})
-    render conn, "index.json", data: data
+    render(conn, "index.json", data: data)
   end
 
   def make_query({long, lat, radius}) do
     point = %Geo.Point{coordinates: {long, lat}, srid: 4326}
+
     query =
       from j in JobOffer,
         select: [
@@ -23,11 +24,13 @@ defmodule GeospatialApiWeb.JobsInRadiusController do
         where: fragment("ST_distance_sphere(?,?) <= ?", j.office_location, ^point, ^radius),
         order_by: fragment("distance ASC"),
         limit: 50
+
     Repo.all(query)
   end
 
   defp get_radius_in_km(params_val) when is_bitstring(params_val) do
     res = Float.parse(params_val)
+
     case res do
       {val, _} -> val
       :error -> get_radius_in_km(nil)
@@ -36,6 +39,4 @@ defmodule GeospatialApiWeb.JobsInRadiusController do
 
   defp get_radius_in_km(params_val) when is_integer(params_val), do: params_val
   defp get_radius_in_km(nil), do: 50
-
-
 end

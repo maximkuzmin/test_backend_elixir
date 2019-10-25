@@ -9,7 +9,7 @@ defmodule GeospatialApiWeb.JobsInRadiusView do
     %{
       name: job_offer.name,
       contract_type: job_offer.name,
-      distance: Float.round(distance_in_meters/1000, 1)
+      distance: Float.round(distance_in_meters / 1000, 1)
     }
   end
 end

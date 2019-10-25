@@ -12,10 +12,9 @@ defmodule GeospatialApi.Profession do
   @doc false
   def changeset(profession, attrs) do
     profession
-      |> cast(attrs, [:name, :category_name])
-      |> validate_required([:name, :category_name])
+    |> cast(attrs, [:name, :category_name])
+    |> validate_required([:name, :category_name])
   end
-
 
   def import_changeset(profession, attrs) do
     changeset(profession, attrs) |> cast(attrs, [:id])
