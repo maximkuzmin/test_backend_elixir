@@ -17,7 +17,7 @@ $ docker-compose up -d
 $ docker-compose exec postgis bash
 
 # inside the container import GIS dataset. Dataset is free, but belongs to https://www.naturalearthdata.com/
-$ shp2pgsql -I -d -s 4326 -c datasets/ne_10m_admin_0_countries.shp countries | psql -U user -d geospatial_api_dev
+$ shp2pgsql -I -d -s 4326 -c datasets/ne_50m_admin_0_countries.shp countries | psql -U user -d geospatial_api_dev
 
 # and then just exit from container
 $ exit
