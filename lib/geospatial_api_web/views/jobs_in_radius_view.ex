@@ -5,6 +5,10 @@ defmodule GeospatialApiWeb.JobsInRadiusView do
     }
   end
 
+  def render("error.json", %{errors: errors}) do
+    %{errors: errors}
+  end
+
   defp to_json([job_offer, distance_in_meters]) do
     %{
       name: job_offer.name,
