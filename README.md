@@ -46,10 +46,10 @@ I can, however, suggest to use solution from Task 2 since beginning, because spe
  3) "continent:Europe:category:TECH" => integer pairs to fastly access and increment/decrement on JobOffers table insertions/deletions
  in Ruby-like pseudocode it could look like:
  ```
-    def update_continent_statistics(location) do
-        rough_lat = location.lat.round
-        rough_long = location.long.round
-        cont = KeyValStore.get("long:#{long}:lat:#{lat}:continent")
+    def update_continent_statistics(lat, long, profession_id) do
+        rough_lat = lat.round
+        rough_long = long.round
+        continent = KeyValStore.get("long:#{rough_long}:lat:#{rough_lat}:continent")
         category_name = KeyValStore.get("profession:#{profession_id}:category")
         KeyValStore.increment("continent:#{continent}:category:#{category_name}")
     end
